@@ -6,6 +6,7 @@ public static class GlobalConst
     public const string MouseScrollWheel = "Mouse ScrollWheel";
     public const string MouseAxisX = "Mouse X";
     public const string MouseAxisY = "Mouse Y";
-    public const string RMB = "Fire2";
+    public const int RMB = 1;
+    public const int LMB = 0;
 
 }

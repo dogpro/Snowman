@@ -32,7 +32,7 @@ public class CameraControl : MonoBehaviour
     void Update()
     {
         CameraZoom();
-        CameraRotation();
+        //CameraRotation();
         transform.position = transform.rotation * _offset + _player.position;
         CameraOcclusion();
     }
@@ -45,7 +45,7 @@ public class CameraControl : MonoBehaviour
     }
     private void CameraRotation()
     {
-        if (Input.GetAxis(GlobalConst.RMB) > 0)
+        if (Input.GetMouseButton(GlobalConst.RMB))
         {
             _axisX = transform.localEulerAngles.y + Input.GetAxis(GlobalConst.MouseAxisX) * _mouseSensitivity;
             _axisY += Input.GetAxis(GlobalConst.MouseAxisY) * _mouseSensitivity;

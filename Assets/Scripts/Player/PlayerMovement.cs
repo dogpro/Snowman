@@ -7,13 +7,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _smoothTime = .1f;
-    [SerializeField] private Transform _camera;
     private float _smoothVelocity;
-
-
     private Rigidbody _rb;
     private PlayerInputs _playerInputs;
-    private Vector3 _currentMovementDir = Vector3.zero;
 
     private void Awake()
     {
@@ -32,20 +28,23 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        if (_playerInputs.MovementDirection == Vector3.zero)
+        if (_playerInputs.MovementDirection == Vector3.zero && _playerInputs.AimDirection == Vector3.zero)
             return;
-        _currentMovementDir = _playerInputs.MovementDirection;
-        _currentMovementDir = _camera.TransformDirection(_currentMovementDir);
-        PlayerRotation();
+        if (_playerInputs.AimDirection != Vector3.zero)
+        {
+            transform.forward = _playerInputs.AimDirection;
+            return;
+        }
+        MoveRotation(_playerInputs.MovementDirection);
     }
 
     private void PlayerMove()
     {
-        _rb.velocity = new Vector3(_currentMovementDir.x * _moveSpeed, _rb.velocity.y, _currentMovementDir.z * _moveSpeed);
+        _rb.velocity = new Vector3(_playerInputs.MovementDirection.x * _moveSpeed, _rb.velocity.y, _playerInputs.MovementDirection.z * _moveSpeed);
     }
-    private void PlayerRotation()
+    private void MoveRotation(Vector3 _dir)
     {
-        float targetAngle = Mathf.Atan2(_currentMovementDir.x, _currentMovementDir.z) * Mathf.Rad2Deg;
+        float targetAngle = Mathf.Atan2(_dir.x, _dir.z) * Mathf.Rad2Deg;
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref _smoothVelocity, _smoothTime);
         transform.rotation = Quaternion.Euler(0, angle, 0);
     }
